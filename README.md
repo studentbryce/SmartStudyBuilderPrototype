@@ -4,19 +4,19 @@ Static web prototype for COMP.7213 Human Computer Interaction (Assignment 1).
 
 ## Project Structure
 
-- `login.html` - Login page
-- `hub.html` - Main hub page
-- `schedule.html` - Schedule page
-- `support.html` - Support page
-- `styles.css` - Shared global styles
-- `script.js` - Shared interactive logic
-- `login.css`, `hub.css` - Page-specific styles
-- `login.js`, `hub.js`, `support.js` - Page-specific scripts
-- `images/` - Static assets
+- `index.html` - Root entry page (redirects to login)
+- `pages/` - All HTML pages
+	- `login.html` - Login page
+	- `hub.html` - Main hub page
+	- `schedule.html` - Schedule page
+	- `support.html` - Support page
+- `assets/css/` - Stylesheets (`styles.css`, `login.css`, `hub.css`)
+- `assets/js/` - JavaScript files (`script.js`, `login.js`, `hub.js`, `support.js`)
+- `assets/images/` - Static image assets
 
 ## Run Locally
 
-Open any HTML file in a browser (for example, `login.html`).
+Open `index.html` in a browser.
 
 ## Notes
 
