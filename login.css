@@ -1,0 +1,251 @@
+:root {
+    --primary: #0066cc;
+    --primary-dark: #004c99;
+    --text-main: #1f2933;
+    --text-muted: #6c757d;
+    --surface: #ffffff;
+    --surface-muted: #f8f9fa;
+    --border: #d5dee8;
+    --danger: #c53030;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    color: var(--text-main);
+    background: #000000;
+}
+
+.login-layout {
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+.brand-panel {
+    background: radial-gradient(circle at 20% 15%, rgba(32, 72, 120, 0.35) 0%, rgba(0, 0, 0, 0) 45%),
+        #000000;
+    color: #ffffff;
+    padding: 56px 48px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
+.brand-content {
+    max-width: 1200px;
+    width: 100%;
+    text-align: center;
+    pointer-events: none;
+}
+
+.brand-kicker {
+    display: none;
+}
+
+.brand-content h1 {
+    margin: 0;
+    font-size: clamp(3.2rem, 13vw, 11rem);
+    font-weight: 800;
+    letter-spacing: 0.02em;
+    line-height: 1;
+    color: rgba(255, 255, 255, 0.12);
+    text-transform: uppercase;
+}
+
+.brand-subhead {
+    display: none;
+}
+
+.brand-description {
+    display: none;
+}
+
+.form-panel {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    width: min(440px, calc(100% - 32px));
+    display: flex;
+    align-items: stretch;
+    justify-content: center;
+    z-index: 3;
+}
+
+.form-card {
+    width: 100%;
+    background: rgba(255, 255, 255, 0.98);
+    border: 1px solid rgba(213, 222, 232, 0.9);
+    border-radius: 18px;
+    padding: 32px;
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.45);
+}
+
+.form-card h2 {
+    margin: 0;
+    font-size: 1.65rem;
+    font-weight: 700;
+}
+
+.form-subtitle {
+    margin: 8px 0 24px;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+.form-field {
+    display: grid;
+    gap: 8px;
+    margin-bottom: 16px;
+}
+
+.form-field span {
+    font-size: 0.88rem;
+    font-weight: 600;
+}
+
+.form-field input {
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 0.95rem;
+    color: var(--text-main);
+    background: var(--surface);
+}
+
+.form-field input:focus {
+    outline: 3px solid rgba(0, 102, 204, 0.2);
+    border-color: var(--primary);
+}
+
+.password-wrap {
+    position: relative;
+}
+
+.password-wrap input {
+    padding-right: 78px;
+}
+
+.toggle-password {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    border: none;
+    background: #ebf4ff;
+    color: #17538b;
+    border-radius: 8px;
+    padding: 6px 10px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.toggle-password:hover {
+    background: #dbeafd;
+}
+
+.form-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 4px 0 18px;
+}
+
+.remember-me {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.88rem;
+    color: var(--text-muted);
+}
+
+.text-link {
+    color: var(--primary);
+    font-size: 0.88rem;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.text-link:hover {
+    text-decoration: underline;
+}
+
+.btn-login {
+    width: 100%;
+    border: 1px solid var(--primary-dark);
+    background: linear-gradient(180deg, #1a7be0 0%, #0066cc 100%);
+    color: #ffffff;
+    font-size: 1rem;
+    font-weight: 700;
+    border-radius: 10px;
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-login:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 14px rgba(0, 102, 204, 0.3);
+}
+
+.btn-login:focus-visible {
+    outline: 3px solid rgba(0, 102, 204, 0.25);
+    outline-offset: 2px;
+}
+
+.btn-login:disabled {
+    opacity: 0.8;
+    cursor: wait;
+}
+
+.form-message {
+    min-height: 22px;
+    margin: 12px 0 0;
+    color: var(--danger);
+    font-size: 0.88rem;
+    font-weight: 500;
+}
+
+.form-message.success {
+    color: #1f7a40;
+}
+
+@media (max-width: 992px) {
+    .brand-panel {
+        padding: 24px;
+    }
+
+    .brand-content h1 {
+        font-size: clamp(2.4rem, 18vw, 5.2rem);
+    }
+
+    .form-panel {
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        justify-content: center;
+        padding: 0 16px 28px;
+        margin-top: 0;
+    }
+
+    .form-card {
+        border-radius: 14px;
+    }
+}

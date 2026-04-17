@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Hub</title>
+    <script>
+        if (sessionStorage.getItem('hubLoggedIn') !== 'true') {
+            window.location.replace('login.html');
+        }
+    </script>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+        }
+
+        header {
+            background: #ffffff;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            font-size: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .signout-btn {
+            position: absolute;
+            right: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 1px solid #d5d5d5;
+            border-radius: 8px;
+            background: #f9f9f9;
+            color: #2c3e50;
+            font-size: 13px;
+            font-weight: 700;
+            padding: 8px 12px;
+            cursor: pointer;
+        }
+
+        .signout-btn:hover {
+            background: #efefef;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
+            padding: 20px;
+            max-width: 1500px;
+            margin: 0 auto;
+        }
+
+        .tile {
+            background: #3498db;
+            color: white;
+            padding: 25px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            min-height: 120px;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .tile:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .green { background: #27ae60; }
+        .orange { background: #e67e22; }
+        .blue { background: #2980b9; }
+        .teal { background: #16a085; }
+        .red { background: #e74c3c; }
+        .purple { background: #8e44ad; }
+        .yellow { background: #f1c40f; color: black; }
+        .dark { background: #2c3e50; }
+
+        .wide {
+            grid-column: span 2;
+        }
+
+        .main-feature {
+            grid-column: 1 / -1;
+            min-height: 150px;
+            font-size: 26px;
+            letter-spacing: 0.01em;
+            box-shadow: 0 6px 18px rgba(0,0,0,0.28);
+        }
+
+        .main-feature:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 10px 24px rgba(0,0,0,0.34);
+        }
+
+        @media (max-width: 600px) {
+            .wide {
+                grid-column: span 1;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    TOI-OHOMAI HUB
+    <button class="signout-btn" onclick="signOut()">Sign Out</button>
+</header>
+
+<div class="grid">
+    <a class="tile purple main-feature" href="schedule.html">Smart Study Schedule Builder</a>
+
+    <a class="tile dark wide" href="#">Smokefree &amp; Vape Free</a>
+    <a class="tile orange" href="#">Akonga Success</a>
+    <a class="tile teal" href="#">Moodle</a>
+    <a class="tile red" href="#">Google Classroom</a>
+
+    <a class="tile teal" href="support.html">IT Help</a>
+    <a class="tile orange" href="#">Library</a>
+    <a class="tile green wide" href="#">Events</a>
+    <a class="tile yellow" href="#">Student Voice</a>
+
+    <a class="tile orange" href="#">Accessibility</a>
+    <a class="tile green" href="#">On Campus Services</a>
+    <a class="tile orange" href="#">Fun &amp; Goodies</a>
+    <a class="tile blue" href="#">Print Balance</a>
+    <a class="tile blue" href="#">Printing Help</a>
+
+    <a class="tile orange" href="#">LinkedIn Learning</a>
+    <a class="tile orange" href="#">Office 365</a>
+    <a class="tile green wide" href="#">My Results</a>
+    <a class="tile blue" href="#">Update Details</a>
+    <a class="tile red" href="#">My PIN</a>
+    <a class="tile red" href="#">Emergencies</a>
+    <a class="tile teal" href="#">My Email</a>
+
+    <a class="tile teal" href="#">Password Reset</a>
+    <a class="tile teal" href="#">Campus Maps</a>
+
+    <a class="tile dark wide" href="#">Check In Now<br>Human Computer Interaction</a>
+    <a class="tile orange" href="#">Alerts</a>
+</div>
+
+<script>
+    function signOut() {
+        sessionStorage.removeItem('hubLoggedIn');
+        window.location.href = 'login.html';
+    }
+</script>
+
+</body>
+</html>

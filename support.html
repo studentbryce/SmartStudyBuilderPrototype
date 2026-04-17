@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Help - Smart Study Schedule Builder</title>
+    <script>
+        if (sessionStorage.getItem('hubLoggedIn') !== 'true') {
+            window.location.replace('login.html');
+        }
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>Toi Ohomai Student Hub</h1>
+                </div>
+                <nav class="nav">
+                    <a href="hub.html" class="nav-link">Dashboard</a>
+                    <a href="schedule.html" class="nav-link">Planner</a>
+                    <a href="support.html" class="nav-link active">Help</a>
+                </nav>
+                <div class="user-profile">
+                    <span>Maya P.</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container support-stack">
+            <div class="page-header">
+                <h2>Smart Study Schedule Builder Help</h2>
+                <div class="sync-status">
+                    <span class="sync-indicator" aria-hidden="true">●</span>
+                    <span class="sync-text">Help content updated 1 minute ago</span>
+                </div>
+            </div>
+
+            <div class="alert-banner warning" id="support-alert" role="status" aria-live="polite">
+                <div class="alert-icon" aria-hidden="true">⚠️</div>
+                <div class="alert-content">
+                    <strong>Tip:</strong> Use the Timeline view when you need to plan heavy weeks quickly.
+                </div>
+                <button class="alert-dismiss" type="button" onclick="dismissSupportAlert()" aria-label="Dismiss support alert">&times;</button>
+            </div>
+
+            <div class="view-controls">
+                <div class="view-tabs" role="tablist" aria-label="Help categories">
+                    <button class="tab-button active" type="button" data-view="getting-started" role="tab" aria-selected="true" aria-controls="getting-started-view">Getting Started</button>
+                    <button class="tab-button" type="button" data-view="features" role="tab" aria-selected="false" aria-controls="features-view">Key Features</button>
+                    <button class="tab-button" type="button" data-view="troubleshooting" role="tab" aria-selected="false" aria-controls="troubleshooting-view">Troubleshooting</button>
+                </div>
+                <div class="controls-actions">
+                    <button class="btn-manage" type="button" onclick="focusSupportForm()">
+                        <span class="filter-icon" aria-hidden="true">✉️</span> Contact Help
+                    </button>
+                </div>
+            </div>
+
+            <section class="view-panel" id="getting-started-view" role="tabpanel">
+                <div class="section-header">
+                    <h3>Getting Started</h3>
+                    <span class="week-range">Learn the fastest path to your first planned week</span>
+                </div>
+                <div class="support-grid">
+                    <article class="support-card">
+                        <h4>Step 1: Review This Week</h4>
+                        <p>Open This Week tab and identify cards marked High Priority or due in 3 days.</p>
+                        <div class="support-meta">
+                            <span class="support-status online">Online</span>
+                            <span class="support-kpi">Best for daily planning</span>
+                        </div>
+                    </article>
+                    <article class="support-card">
+                        <h4>Step 2: Start an Assignment</h4>
+                        <p>Click Start Now on your most urgent card so progress and status are tracked.</p>
+                        <div class="support-meta">
+                            <span class="support-status online">Online</span>
+                            <span class="support-kpi">Immediate visual feedback</span>
+                        </div>
+                    </article>
+                    <article class="support-card">
+                        <h4>Step 3: Use Smart Recommendations</h4>
+                        <p>Choose one recommendation and schedule it to avoid last-minute workload spikes.</p>
+                        <div class="support-meta">
+                            <span class="support-status busy">Priority</span>
+                            <span class="support-kpi">Designed for heavy weeks</span>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section class="view-panel" id="features-view" role="tabpanel" hidden>
+                <div class="section-header">
+                    <h3>Key Features Explained</h3>
+                    <span class="week-range">What each view helps you do</span>
+                </div>
+                <div class="support-grid">
+                    <article class="support-card">
+                        <h4>Week View</h4>
+                        <p>Focus on urgent assignments with status labels, due badges, and quick action buttons.</p>
+                        <div class="support-meta">
+                            <span class="support-status online">Use daily</span>
+                            <span class="support-kpi">Most actionable view</span>
+                        </div>
+                    </article>
+                    <article class="support-card">
+                        <h4>Month and Timeline Views</h4>
+                        <p>Spot workload clusters early and spread effort before deadlines overlap.</p>
+                        <div class="support-meta">
+                            <span class="support-status online">Online</span>
+                            <span class="support-kpi">Great for medium-term planning</span>
+                        </div>
+                    </article>
+                    <article class="support-card">
+                        <h4>List View and Filters</h4>
+                        <p>Sort by due date, course, or status and isolate only the assignments you need to see.</p>
+                        <div class="support-meta">
+                            <span class="support-status online">Efficient</span>
+                            <span class="support-kpi">Best for fast triage</span>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section class="view-panel" id="troubleshooting-view" role="tabpanel" hidden>
+                <div class="section-header">
+                    <h3>Troubleshooting</h3>
+                    <span class="week-range">Fix common Smart Study Schedule Builder issues quickly</span>
+                </div>
+                <div class="support-grid">
+                    <article class="support-card">
+                        <h4>Sync indicator keeps spinning</h4>
+                        <p>Refresh the page once. If it persists, sign out and sign in again to reset session sync.</p>
+                        <div class="support-meta">
+                            <span class="support-status online">Online</span>
+                            <span class="support-kpi">Typical fix: under 1 min</span>
+                        </div>
+                    </article>
+                    <article class="support-card">
+                        <h4>Card actions not updating</h4>
+                        <p>Check that the selected tab is active, then click Start Now or Mark Complete again.</p>
+                        <div class="support-meta">
+                            <span class="support-status online">Online</span>
+                            <span class="support-kpi">State refresh may be needed</span>
+                        </div>
+                    </article>
+                    <article class="support-card">
+                        <h4>Filter hides everything</h4>
+                        <p>Open Filter and re-enable at least one course and one status to show matching cards.</p>
+                        <div class="support-meta">
+                            <span class="support-status busy">Common</span>
+                            <span class="support-kpi">Resolved in 2 clicks</span>
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section class="recommendations-panel" aria-labelledby="faq-title">
+                <div class="section-header">
+                    <h3 id="faq-title">Frequently Asked Questions</h3>
+                    <p class="section-subtitle">Answers focused on the Smart Study Schedule Builder</p>
+                </div>
+                <div class="faq-list">
+                    <article class="faq-item">
+                        <button class="faq-toggle" type="button" onclick="toggleFaq(this)" aria-expanded="false">
+                            What should I do first when I open the planner?
+                            <span class="faq-chevron" aria-hidden="true">⌄</span>
+                        </button>
+                        <div class="faq-answer" hidden>
+                            Start in This Week and pick the assignment with the nearest due badge. Mark it In Progress to begin tracking.
+                        </div>
+                    </article>
+                    <article class="faq-item">
+                        <button class="faq-toggle" type="button" onclick="toggleFaq(this)" aria-expanded="false">
+                            How do I recover if I marked the wrong assignment complete?
+                            <span class="faq-chevron" aria-hidden="true">⌄</span>
+                        </button>
+                        <div class="faq-answer" hidden>
+                            Use the Undo action from the toast message immediately after marking complete.
+                        </div>
+                    </article>
+                    <article class="faq-item">
+                        <button class="faq-toggle" type="button" onclick="toggleFaq(this)" aria-expanded="false">
+                            Which view is best for planning ahead?
+                            <span class="faq-chevron" aria-hidden="true">⌄</span>
+                        </button>
+                        <div class="faq-answer" hidden>
+                            Use Timeline for long-term pacing and Month View to spot clusters of due dates.
+                        </div>
+                    </article>
+                </div>
+            </section>
+
+            <section class="calendar-preview" aria-labelledby="request-title">
+                <div class="section-header">
+                    <h3 id="request-title">Send Help Feedback</h3>
+                    <span class="week-range">Your details stay in this prototype session only</span>
+                </div>
+                <form class="support-form" id="support-form" onsubmit="submitSupportRequest(event)">
+                    <div class="support-field">
+                        <label for="support-topic">Help Topic</label>
+                        <select id="support-topic" required>
+                            <option value="">Select help topic</option>
+                            <option value="Getting Started">Getting Started</option>
+                            <option value="Key Features">Key Features</option>
+                            <option value="Troubleshooting">Troubleshooting</option>
+                        </select>
+                    </div>
+                    <div class="support-field">
+                        <label for="support-urgency">Priority</label>
+                        <select id="support-urgency" required>
+                            <option value="">Select priority</option>
+                            <option value="Low">Low</option>
+                            <option value="Medium">Medium</option>
+                            <option value="High">High</option>
+                        </select>
+                    </div>
+                    <div class="support-field full">
+                        <label for="support-subject">Subject</label>
+                        <input id="support-subject" type="text" maxlength="100" placeholder="Short summary of your help request" required>
+                    </div>
+                    <div class="support-field full">
+                        <label for="support-message">Message</label>
+                        <textarea id="support-message" placeholder="Describe what happened in the Smart Study Schedule Builder and what you expected." required></textarea>
+                    </div>
+                    <div class="support-actions">
+                        <button class="btn btn-secondary" type="reset">Clear</button>
+                        <button class="btn btn-primary" type="submit">Send Feedback</button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </main>
+
+    <nav class="mobile-nav">
+        <a href="hub.html" class="mobile-nav-item">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">Home</span>
+        </a>
+        <a href="schedule.html" class="mobile-nav-item">
+            <span class="nav-icon">📅</span>
+            <span class="nav-label">Planner</span>
+        </a>
+        <a href="#" class="mobile-nav-item">
+            <span class="nav-icon">📚</span>
+            <span class="nav-label">Courses</span>
+        </a>
+        <a href="support.html" class="mobile-nav-item active" aria-current="page">
+            <span class="nav-icon">🛟</span>
+            <span class="nav-label">Help</span>
+        </a>
+    </nav>
+
+    <div class="toast" id="support-toast" role="status" aria-live="polite">
+        <span class="toast-icon">✓</span>
+        <span class="toast-message">Feedback sent.</span>
+        <button class="toast-undo" type="button" onclick="hideSupportToast()">Dismiss</button>
+    </div>
+
+    <script src="support.js"></script>
+</body>
+</html>

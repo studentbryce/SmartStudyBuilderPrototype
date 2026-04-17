@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Study Schedule Builder - Toi Ohomai Student Hub</title>
+    <script>
+        if (sessionStorage.getItem('hubLoggedIn') !== 'true') {
+            window.location.replace('login.html');
+        }
+    </script>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>Toi Ohomai Student Hub</h1>
+                </div>
+                <nav class="nav">
+                    <a href="hub.html" class="nav-link">Dashboard</a>
+                    <a href="#" class="nav-link">My Courses</a>
+                    <a href="support.html" class="nav-link">Help</a>
+                </nav>
+                <div class="user-profile">
+                    <span>Maya P.</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            
+            <!-- Page Title -->
+            <div class="page-header">
+                <h2>Smart Study Schedule Builder</h2>
+                <div class="sync-status">
+                    <span class="sync-indicator">🔄</span>
+                    <span class="sync-text">Last synced: 2 minutes ago</span>
+                </div>
+            </div>
+
+            <!-- Alert Banner -->
+            <div class="alert-banner warning" id="workload-alert">
+                <div class="alert-icon">⚠️</div>
+                <div class="alert-content">
+                    <strong>High workload week ahead:</strong> March 22-28 (3 major assignments due)
+                </div>
+                <button class="alert-dismiss" onclick="dismissAlert()">&times;</button>
+            </div>
+
+            <!-- View Tabs -->
+            <div class="view-controls">
+                <div class="view-tabs">
+                    <button class="tab-button active" data-view="week">This Week</button>
+                    <button class="tab-button" data-view="month">Month View</button>
+                    <button class="tab-button" data-view="list">List View</button>
+                    <button class="tab-button" data-view="timeline">Timeline</button>
+                </div>
+                <div class="controls-actions">
+                    <button class="btn-manage" onclick="openCardManager()" aria-label="Manage assignment cards">
+                        <span class="filter-icon">✏️</span> Add New Assignment
+                    </button>
+                    <button class="btn-filter" onclick="toggleFilter()" aria-label="Filter assignments">
+                        <span class="filter-icon">🔍</span> Filter
+                    </button>
+                </div>
+            </div>
+
+            <!-- This Week Section -->
+            <section class="week-view view-panel" id="week-view">
+                <div class="section-header">
+                    <h3>This Week</h3>
+                    <span class="week-range">March 15 - March 21, 2026</span>
+                </div>
+
+                <!-- Assignment Cards -->
+                <div class="assignments-grid">
+                    
+                    <!-- Assignment 1 - Urgent -->
+                    <div class="assignment-card urgent" data-assignment-id="0">
+                        <div class="card-header">
+                            <div class="course-tag ai">AI and Algorithms</div>
+                            <div class="priority-badge high">High Priority</div>
+                        </div>
+                        <h4 class="assignment-title">As1: Search and Heuristic Models</h4>
+                        <div class="assignment-meta">
+                            <div class="meta-item">
+                                <span class="icon">📅</span>
+                                <span class="meta-text">Due: Friday, March 19</span>
+                                <span class="due-badge urgent">IN 4 DAYS</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="icon">⏱️</span>
+                                <span class="meta-text">Est. Time: 2-3 hours reading</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="icon">📊</span>
+                                <span class="status-label not-started">Not Started</span>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn btn-primary" onclick="markInProgress(0)">Start Now</button>
+                            <button class="btn btn-secondary" onclick="showDetails(0)">View Details</button>
+                        </div>
+                    </div>
+
+                    <!-- Assignment 2 - Important -->
+                    <div class="assignment-card important" data-assignment-id="1">
+                        <div class="card-header">
+                            <div class="course-tag cybersecurity">Cyber Security</div>
+                            <div class="priority-badge medium">Medium Priority</div>
+                        </div>
+                        <h4 class="assignment-title">As1: Threat Modeling Report</h4>
+                        <div class="assignment-meta">
+                            <div class="meta-item">
+                                <span class="icon">📅</span>
+                                <span class="meta-text">Due: Thursday, March 18</span>
+                                <span class="due-badge important">IN 3 DAYS</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="icon">⏱️</span>
+                                <span class="meta-text">Est. Time: 3-4 hours</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="icon">📊</span>
+                                <span class="status-label in-progress">In Progress (40%)</span>
+                            </div>
+                        </div>
+                        <div class="progress-bar">
+                            <div class="progress-fill" style="width: 40%"></div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn btn-primary" onclick="continueWork(1)">Continue</button>
+                            <button class="btn btn-success" onclick="markComplete(1)">Mark Complete</button>
+                        </div>
+                    </div>
+
+                    <!-- Assignment 3 - Normal -->
+                    <div class="assignment-card normal" data-assignment-id="2">
+                        <div class="card-header">
+                            <div class="course-tag hci">Human Computer Interaction</div>
+                            <div class="priority-badge low">Plan Ahead</div>
+                        </div>
+                        <h4 class="assignment-title">As1: Usability Evaluation Plan</h4>
+                        <div class="assignment-meta">
+                            <div class="meta-item">
+                                <span class="icon">📅</span>
+                                <span class="meta-text">Due: Monday, March 22</span>
+                                <span class="due-badge normal">IN 1 WEEK</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="icon">⏱️</span>
+                                <span class="meta-text">Est. Time: 4-6 hours total</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="icon">📊</span>
+                                <span class="status-label not-started">Not Started</span>
+                            </div>
+                        </div>
+                        <div class="card-actions">
+                            <button class="btn btn-primary" onclick="markInProgress(2)">Start Working</button>
+                            <button class="btn btn-secondary" onclick="showDetails(2)">View Details</button>
+                        </div>
+                    </div>
+
+                </div> <!-- End assignments grid -->
+
+            </section> <!-- End this week section -->
+
+            <!-- Month View -->
+            <section class="month-view view-panel" id="month-view" hidden>
+                <div class="section-header">
+                    <h3>Month View</h3>
+                    <span class="week-range" id="month-view-label">Current Month</span>
+                </div>
+                <div class="month-grid" id="month-grid"></div>
+            </section>
+
+            <!-- List View -->
+            <section class="list-view view-panel" id="list-view" hidden>
+                <div class="section-header">
+                    <h3>List View</h3>
+                    <div class="list-controls">
+                        <label for="list-sort-field" class="list-sort-label">Sort by</label>
+                        <select id="list-sort-field" onchange="setListSort(this.value)">
+                            <option value="due">Due Date</option>
+                            <option value="course">Course</option>
+                            <option value="status">Status</option>
+                        </select>
+                        <button class="btn btn-secondary" type="button" onclick="toggleListSortDirection()" id="list-sort-direction">
+                            Ascending
+                        </button>
+                    </div>
+                </div>
+                <div class="list-table-wrap">
+                    <table class="assignments-table" aria-label="Sortable list of upcoming items">
+                        <thead>
+                            <tr>
+                                <th>Course</th>
+                                <th>Item</th>
+                                <th>Due</th>
+                                <th>Status</th>
+                                <th>Est. Time</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="list-view-body"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Timeline View -->
+            <section class="timeline-view view-panel" id="timeline-view" hidden>
+                <div class="section-header">
+                    <h3>Timeline</h3>
+                    <span class="week-range">Linear view of upcoming weeks</span>
+                </div>
+                <div class="timeline-track" id="timeline-track"></div>
+            </section>
+
+            <!-- Smart Recommendations Panel -->
+            <section class="recommendations-panel">
+                <div class="section-header">
+                    <h3>📌 Smart Recommendations</h3>
+                    <p class="section-subtitle">Here's what we suggest based on your workload</p>
+                </div>
+                
+                <div class="recommendations-list">
+                    <div class="recommendation-item priority-1">
+                        <div class="rec-icon">🎯</div>
+                        <div class="rec-content">
+                            <h4>Complete Cyber Security Paper Draft Today</h4>
+                            <p>You have 3 hours of free time this afternoon (2:00-5:00 PM). This is enough to complete your threat model and risk table draft.</p>
+                            <button class="btn-link" onclick="scheduleTask(1, 'today')">Add to Schedule →</button>
+                        </div>
+                    </div>
+
+                    <div class="recommendation-item priority-2">
+                        <div class="rec-icon">📚</div>
+                        <div class="rec-content">
+                            <h4>Draft AI and Algorithms Outline Wednesday Evening</h4>
+                            <p>Paper is due Friday. Set aside 1-2 hours Wednesday evening to map your search strategy argument and references.</p>
+                            <button class="btn-link" onclick="scheduleTask(0, 'wednesday')">Schedule Review →</button>
+                        </div>
+                    </div>
+
+                    <div class="recommendation-item priority-3">
+                        <div class="rec-icon">⏰</div>
+                        <div class="rec-content">
+                            <h4>Start HCI Evaluation Plan This Weekend</h4>
+                            <p>Next week is heavy. Get ahead by drafting personas and usability metrics Saturday or Sunday (3-4 hours recommended).</p>
+                            <button class="btn-link" onclick="scheduleTask(2, 'weekend')">Plan Weekend Work →</button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Upcoming Calendar Preview -->
+            <section class="calendar-preview">
+                <div class="section-header">
+                    <h3>Next Two Weeks</h3>
+                    <button class="btn-link">View Full Calendar →</button>
+                </div>
+                
+                <div class="calendar-grid">
+                    <div class="calendar-week">
+                        <div class="week-label">This Week</div>
+                        <div class="week-bar normal">
+                            <div class="bar-fill" style="width: 60%"></div>
+                            <span class="bar-label">3 items</span>
+                        </div>
+                    </div>
+                    <div class="calendar-week">
+                        <div class="week-label">March 22-28</div>
+                        <div class="week-bar heavy">
+                            <div class="bar-fill" style="width: 95%"></div>
+                            <span class="bar-label">5 items ⚠️</span>
+                        </div>
+                    </div>
+                    <div class="calendar-week">
+                        <div class="week-label">March 29-Apr 4</div>
+                        <div class="week-bar light">
+                            <div class="bar-fill" style="width: 30%"></div>
+                            <span class="bar-label">2 items</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+        </div> <!-- End container -->
+    </main>
+
+    <!-- Mobile Navigation (Bottom Bar) -->
+    <nav class="mobile-nav">
+        <a href="hub.html" class="mobile-nav-item">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">Home</span>
+        </a>
+        <a href="#" class="mobile-nav-item active">
+            <span class="nav-icon">📅</span>
+            <span class="nav-label">Planner</span>
+        </a>
+        <a href="#" class="mobile-nav-item">
+            <span class="nav-icon">📚</span>
+            <span class="nav-label">Courses</span>
+        </a>
+        <a href="support.html" class="mobile-nav-item">
+            <span class="nav-icon">🛟</span>
+            <span class="nav-label">Help</span>
+        </a>
+    </nav>
+
+    <!-- Toast Notification (hidden by default) -->
+    <div class="toast" id="toast">
+        <span class="toast-icon">✓</span>
+        <span class="toast-message">Action completed!</span>
+        <button class="toast-undo" onclick="undoAction()">Undo</button>
+    </div>
+
+    <!-- Modal Dialog for Assignment Details -->
+    <div class="modal-overlay" id="modal-overlay" onclick="closeModal()">
+        <div class="modal-dialog" onclick="event.stopPropagation()" role="dialog" aria-labelledby="modal-title" aria-modal="true">
+            <div class="modal-header">
+                <h3 id="modal-title">Assignment Details</h3>
+                <button class="modal-close" onclick="closeModal()" aria-label="Close dialog">&times;</button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Content populated dynamically -->
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeModal()">Close</button>
+                <button class="btn btn-primary" onclick="openInMoodle()">Open in Moodle</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filter Panel -->
+    <div class="filter-panel" id="filter-panel">
+        <div class="filter-header">
+            <h4>Filter Assignments</h4>
+            <button class="filter-close" onclick="closeFilter()">&times;</button>
+        </div>
+        <div class="filter-content">
+            <div class="filter-section">
+                <h5>By Course</h5>
+                <label class="filter-checkbox">
+                    <input type="checkbox" value="AI and Algorithms" checked onchange="applyFilters()"> 
+                    <span class="course-tag ai">AI and Algorithms</span>
+                </label>
+                <label class="filter-checkbox">
+                    <input type="checkbox" value="Cyber Security" checked onchange="applyFilters()"> 
+                    <span class="course-tag cybersecurity">Cyber Security</span>
+                </label>
+                <label class="filter-checkbox">
+                    <input type="checkbox" value="Human Computer Interaction" checked onchange="applyFilters()"> 
+                    <span class="course-tag hci">Human Computer Interaction</span>
+                </label>
+            </div>
+            <div class="filter-section">
+                <h5>By Status</h5>
+                <label class="filter-checkbox">
+                    <input type="checkbox" value="not-started" checked onchange="applyFilters()"> Not Started
+                </label>
+                <label class="filter-checkbox">
+                    <input type="checkbox" value="in-progress" checked onchange="applyFilters()"> In Progress
+                </label>
+                <label class="filter-checkbox">
+                    <input type="checkbox" value="completed" onchange="applyFilters()"> Completed
+                </label>
+            </div>
+            <div class="filter-actions">
+                <button class="btn-link" onclick="clearFilters()">Clear All</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card Manager Modal -->
+    <div class="modal-overlay" id="card-manager-overlay" onclick="closeCardManager()">
+        <div class="modal-dialog" onclick="event.stopPropagation()" role="dialog" aria-labelledby="card-manager-title" aria-modal="true">
+            <div class="modal-header">
+                <h3 id="card-manager-title">Manage Assignment Cards</h3>
+                <button class="modal-close" onclick="closeCardManager()" aria-label="Close card manager">&times;</button>
+            </div>
+            <form id="card-manager-form" class="card-form" onsubmit="submitCardForm(event)">
+                <div class="modal-body">
+                    <div class="card-form-grid">
+                        <label class="card-form-field">
+                            <span>Course</span>
+                            <input type="text" id="card-course" required>
+                        </label>
+                        <label class="card-form-field">
+                            <span>Title</span>
+                            <input type="text" id="card-title" required>
+                        </label>
+                        <label class="card-form-field">
+                            <span>Due Date</span>
+                            <input type="text" id="card-due-date" placeholder="Friday, March 19" required>
+                        </label>
+                        <label class="card-form-field">
+                            <span>Days Until Due</span>
+                            <input type="number" id="card-days-until" min="0" max="365" required>
+                        </label>
+                        <label class="card-form-field">
+                            <span>Estimated Time</span>
+                            <input type="text" id="card-estimated-time" placeholder="2-3 hours" required>
+                        </label>
+                        <label class="card-form-field">
+                            <span>Status</span>
+                            <select id="card-status" required>
+                                <option value="not-started">Not Started</option>
+                                <option value="in-progress">In Progress</option>
+                                <option value="completed">Completed</option>
+                            </select>
+                        </label>
+                        <label class="card-form-field">
+                            <span>Progress %</span>
+                            <input type="number" id="card-progress" min="0" max="100" required>
+                        </label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="resetCardForm()">Reset</button>
+                    <button type="submit" class="btn btn-primary" id="card-form-submit">Create Card</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

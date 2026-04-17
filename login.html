@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Toi Ohomai Student Hub</title>
+    <link rel="stylesheet" href="login.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+<body>
+    <main class="login-layout">
+        <section class="brand-panel" aria-label="Welcome panel">
+            <div class="brand-content">
+                <p class="brand-kicker">Student Hub</p>
+                <h1>Toi-Ohomai</h1>
+                <p class="brand-subhead">Institute of Technology</p>
+                <p class="brand-description">
+                    Sign in with your Student ID and password to continue.
+                </p>
+            </div>
+        </section>
+
+        <section class="form-panel" aria-label="Login form">
+            <div class="form-card">
+                <h2>Student Login</h2>
+                <p class="form-subtitle">Use your Student ID and password to continue</p>
+
+                <form id="login-form" novalidate>
+                    <label class="form-field" for="student-id">
+                        <span>Student ID</span>
+                        <input
+                            id="student-id"
+                            name="studentId"
+                            type="text"
+                            inputmode="numeric"
+                            autocomplete="username"
+                            placeholder="e.g. 12345678"
+                        >
+                    </label>
+
+                    <label class="form-field" for="password">
+                        <span>Password</span>
+                        <div class="password-wrap">
+                            <input
+                                id="password"
+                                name="password"
+                                type="password"
+                                autocomplete="current-password"
+                                placeholder="Enter your password"
+                            >
+                            <button type="button" id="toggle-password" class="toggle-password" aria-label="Show password">Show</button>
+                        </div>
+                    </label>
+
+                    <div class="form-row">
+                        <label class="remember-me">
+                            <input type="checkbox" name="rememberMe">
+                            <span>Remember me</span>
+                        </label>
+                        <a href="#" class="text-link">Forgot password?</a>
+                    </div>
+
+                    <button type="submit" class="btn-login" id="login-button">Sign In</button>
+                    <p class="form-message" id="form-message" role="status" aria-live="polite"></p>
+                </form>
+            </div>
+        </section>
+    </main>
+
+    <script src="login.js"></script>
+</body>
+</html>
