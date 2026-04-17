@@ -38,6 +38,8 @@ let assignments = [
 let lastAction = null;
 let editingAssignmentId = null;
 let currentView = 'week';
+let reminderStates = loadReminderStates();
+let reminderModalOpen = false;
 let listSort = {
     field: 'due',
     direction: 'asc'
@@ -51,7 +53,9 @@ document.addEventListener('DOMContentLoaded', function() {
     console.log('Smart Study Schedule Builder loaded');
     initializeTabSwitching();
     renderAssignments();
+    renderReminderPanel();
     switchView('week', true);
+    window.setInterval(renderReminderPanel, 30000);
     
     // Simulate sync animation stopping after 5 seconds
     setTimeout(() => {
@@ -227,6 +231,7 @@ function updateAssignmentCard(assignmentId) {
     console.log(`Updated assignment ${assignmentId}:`, assignment);
     renderAssignments();
     applyFilters(true);
+    renderReminderPanel();
 }
 
 function showDetails(assignmentId) {
@@ -601,6 +606,169 @@ function showToast(message, showUndo = false) {
     }, 4000);
 }
 
+function updateReminderLauncher(count) {
+    const launcher = document.getElementById('reminder-launcher');
+    const launcherCount = document.getElementById('reminder-launcher-count');
+
+    if (launcherCount) {
+        launcherCount.textContent = String(count);
+    }
+
+    if (launcher) {
+        launcher.setAttribute('aria-expanded', String(reminderModalOpen));
+    }
+}
+
+function openReminderModal() {
+    const modal = document.getElementById('reminder-modal');
+    if (!modal) return;
+
+    reminderModalOpen = true;
+    modal.classList.add('show');
+    modal.setAttribute('aria-hidden', 'false');
+    updateReminderLauncher(document.querySelectorAll('.reminder-item').length);
+}
+
+function closeReminderModal() {
+    const modal = document.getElementById('reminder-modal');
+    if (!modal) return;
+
+    reminderModalOpen = false;
+    modal.classList.remove('show');
+    modal.setAttribute('aria-hidden', 'true');
+    updateReminderLauncher(document.querySelectorAll('.reminder-item').length);
+}
+
+function toggleReminderModal() {
+    if (reminderModalOpen) {
+        closeReminderModal();
+    } else {
+        openReminderModal();
+    }
+}
+
+function loadReminderStates() {
+    try {
+        const stored = sessionStorage.getItem('studyHubReminderStates');
+        return stored ? JSON.parse(stored) : {};
+    } catch (error) {
+        console.warn('Unable to load reminder states', error);
+        return {};
+    }
+}
+
+function saveReminderStates() {
+    try {
+        sessionStorage.setItem('studyHubReminderStates', JSON.stringify(reminderStates));
+    } catch (error) {
+        console.warn('Unable to save reminder states', error);
+    }
+}
+
+function getReminderState(assignmentId) {
+    return reminderStates[assignmentId] || {};
+}
+
+function getReminderDueText(assignment) {
+    if (assignment.daysUntil === 0) {
+        return 'Due today';
+    }
+
+    if (assignment.daysUntil === 1) {
+        return 'Due tomorrow';
+    }
+
+    return `Due in ${assignment.daysUntil} days`;
+}
+
+function getReminderVisibilityState(assignment) {
+    const state = getReminderState(assignment.id);
+    const now = Date.now();
+
+    if (assignment.status === 'completed') {
+        return { visible: false, label: 'Completed' };
+    }
+
+    if (state.snoozedUntil && state.snoozedUntil > now) {
+        return {
+            visible: false,
+            label: `Snoozed until ${new Date(state.snoozedUntil).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })}`
+        };
+    }
+
+    if (state.dismissedUntil && state.dismissedUntil > now) {
+        return { visible: false, label: 'Dismissed for today' };
+    }
+
+    if (assignment.daysUntil > 7) {
+        return { visible: false, label: 'Not urgent yet' };
+    }
+
+    return { visible: true, label: getReminderDueText(assignment) };
+}
+
+function renderReminderPanel() {
+    const reminderList = document.getElementById('reminder-modal-body');
+    if (!reminderList) return;
+
+    const activeAssignments = assignments
+        .map(assignment => ({ assignment, reminder: getReminderVisibilityState(assignment) }))
+        .filter(item => item.reminder.visible)
+        .sort((a, b) => a.assignment.daysUntil - b.assignment.daysUntil);
+
+    updateReminderLauncher(activeAssignments.length);
+
+    if (activeAssignments.length === 0) {
+        reminderList.innerHTML = '<div class="view-empty">No active reminders right now. Snoozed reminders will come back automatically.</div>';
+        return;
+    }
+
+    reminderList.innerHTML = activeAssignments.map(({ assignment, reminder }) => `
+        <article class="reminder-item">
+            <div class="reminder-content">
+                <h4>${assignment.title}</h4>
+                <div class="course-tag ${getCourseClass(assignment.course)}">${assignment.course}</div>
+                <div class="reminder-meta">
+                    <span>${reminder.label}</span>
+                    <span>Progress ${assignment.progress}%</span>
+                    <span>${assignment.estimatedTime}</span>
+                </div>
+            </div>
+            <div class="reminder-actions">
+                <button class="btn btn-snooze" type="button" onclick="snoozeReminder(${assignment.id}, 15)">Snooze 15 min</button>
+                <button class="btn btn-snooze" type="button" onclick="snoozeReminder(${assignment.id}, 60)">Snooze 1 hour</button>
+                <button class="btn btn-secondary" type="button" onclick="dismissReminder(${assignment.id})">Hide for today</button>
+            </div>
+        </article>
+    `).join('');
+}
+
+function snoozeReminder(assignmentId, minutes) {
+    const assignment = getAssignmentById(assignmentId);
+    if (!assignment) return;
+
+    reminderStates[assignmentId] = {
+        snoozedUntil: Date.now() + (minutes * 60 * 1000),
+        dismissedUntil: null
+    };
+    saveReminderStates();
+    renderReminderPanel();
+    showToast(`Reminder snoozed for ${assignment.title} (${minutes === 60 ? '1 hour' : `${minutes} minutes`})`);
+}
+
+function dismissReminder(assignmentId) {
+    const assignment = getAssignmentById(assignmentId);
+    if (!assignment) return;
+
+    reminderStates[assignmentId] = {
+        snoozedUntil: null,
+        dismissedUntil: Date.now() + (24 * 60 * 60 * 1000)
+    };
+    saveReminderStates();
+    renderReminderPanel();
+    showToast(`Reminder hidden for today: ${assignment.title}`);
+}
+
 function undoAction() {
     if (!lastAction) {
         return;
@@ -939,6 +1107,12 @@ document.addEventListener('keydown', function(e) {
         const filterPanel = document.getElementById('filter-panel');
         if (filterPanel.classList.contains('show')) {
             closeFilter();
+            return;
+        }
+
+        const reminderModal = document.getElementById('reminder-modal');
+        if (reminderModal && reminderModal.classList.contains('show')) {
+            closeReminderModal();
             return;
         }
         

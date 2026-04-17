@@ -316,6 +316,24 @@
         </a>
     </nav>
 
+    <button class="reminder-launcher" type="button" onclick="toggleReminderModal()" aria-controls="reminder-modal" aria-expanded="false" id="reminder-launcher">
+        <span>Reminders</span>
+        <span class="reminder-launcher-count" id="reminder-launcher-count">0</span>
+    </button>
+
+    <section class="reminder-modal" id="reminder-modal" aria-labelledby="reminder-modal-title" aria-hidden="true">
+        <div class="reminder-modal-header">
+            <div>
+                <h3 id="reminder-modal-title">Reminders</h3>
+                <p class="section-subtitle">Snooze reminders or hide them for the day.</p>
+            </div>
+            <button class="reminder-modal-close" type="button" onclick="closeReminderModal()" aria-label="Close reminders">&times;</button>
+        </div>
+        <div class="reminder-modal-body" id="reminder-modal-body">
+            <div class="view-empty">Loading reminders...</div>
+        </div>
+    </section>
+
     <!-- Toast Notification (hidden by default) -->
     <div class="toast" id="toast">
         <span class="toast-icon">✓</span>
