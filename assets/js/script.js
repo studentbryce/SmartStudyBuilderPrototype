@@ -373,9 +373,6 @@ function renderAssignments() {
         const primaryAction = assignment.status === 'in-progress'
             ? `<button class="btn btn-primary" onclick="continueWork(${assignment.id})">Continue</button>`
             : `<button class="btn btn-primary" onclick="markInProgress(${assignment.id})">Start Now</button>`;
-        const secondaryAction = assignment.status === 'completed'
-            ? `<button class="btn btn-secondary" onclick="showDetails(${assignment.id})">View Details</button>`
-            : `<button class="btn btn-success" onclick="markComplete(${assignment.id})">Mark Complete</button>`;
 
         return `
             <div class="assignment-card ${cardPriorityClass}" data-assignment-id="${assignment.id}">
@@ -402,9 +399,10 @@ function renderAssignments() {
                 ${needsProgress ? `<div class="progress-bar"><div class="progress-fill" style="width: ${assignment.progress}%"></div></div>` : ''}
                 <div class="card-actions">
                     ${primaryAction}
-                    ${secondaryAction}
+                    <button class="btn btn-success" onclick="markComplete(${assignment.id})">Mark Complete</button>
                     <button class="btn btn-edit" onclick="openEditCard(${assignment.id})">Edit Card</button>
                 </div>
+                <button class="btn btn-secondary" style="width: 100%; margin-top: 8px;" onclick="showDetails(${assignment.id})">View Details</button>
             </div>
         `;
     }).join('');
