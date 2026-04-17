@@ -156,10 +156,22 @@ function markInProgress(assignmentId) {
 function continueWork(assignmentId) {
     const assignment = getAssignmentById(assignmentId);
     if (!assignment) return;
-    showToast(`Continuing ${assignment.title}...`);
     
-    // In a real app, this might open a study interface or navigate to content
-    console.log(`Opening ${assignment.title}`);
+    // Store for undo
+    lastAction = {
+        type: 'continueWork',
+        assignmentId: assignmentId,
+        previousProgress: assignment.progress
+    };
+    
+    // Add 10% to progress (cap at 100%)
+    assignment.progress = Math.min(assignment.progress + 10, 100);
+    
+    // Update UI
+    updateAssignmentCard(assignmentId);
+    
+    // Show toast
+    showToast(`Progress: ${assignment.progress}%`, true);
 }
 
 function markComplete(assignmentId) {
@@ -183,6 +195,29 @@ function markComplete(assignmentId) {
     
     // Show celebration toast
     showToast(`🎉 Completed "${assignment.title}"!`, true);
+}
+
+function undoMarkComplete(assignmentId) {
+    const assignment = getAssignmentById(assignmentId);
+    if (!assignment) return;
+    
+    // Store for undo
+    lastAction = {
+        type: 'undoMarkComplete',
+        assignmentId: assignmentId,
+        previousStatus: assignment.status,
+        previousProgress: assignment.progress
+    };
+    
+    // Revert to in-progress state
+    assignment.status = 'in-progress';
+    assignment.progress = Math.max(assignment.progress - 10, 10); // Step back 10% or stay at 10%
+    
+    // Update UI
+    updateAssignmentCard(assignmentId);
+    
+    // Show toast
+    showToast(`Undid completion of "${assignment.title}"`, true);
 }
 
 function updateAssignmentCard(assignmentId) {
@@ -373,6 +408,9 @@ function renderAssignments() {
         const primaryAction = assignment.status === 'in-progress'
             ? `<button class="btn btn-primary" onclick="continueWork(${assignment.id})">Continue</button>`
             : `<button class="btn btn-primary" onclick="markInProgress(${assignment.id})">Start Now</button>`;
+        const completeAction = assignment.status === 'completed'
+            ? `<button class="btn btn-warning" onclick="undoMarkComplete(${assignment.id})">Undo Completion</button>`
+            : `<button class="btn btn-success" onclick="markComplete(${assignment.id})">Mark Complete</button>`;
 
         return `
             <div class="assignment-card ${cardPriorityClass}" data-assignment-id="${assignment.id}">
@@ -399,7 +437,7 @@ function renderAssignments() {
                 ${needsProgress ? `<div class="progress-bar"><div class="progress-fill" style="width: ${assignment.progress}%"></div></div>` : ''}
                 <div class="card-actions">
                     ${primaryAction}
-                    <button class="btn btn-success" onclick="markComplete(${assignment.id})">Mark Complete</button>
+                    ${completeAction}
                     <button class="btn btn-edit" onclick="openEditCard(${assignment.id})">Edit Card</button>
                 </div>
                 <button class="btn btn-secondary" style="width: 100%; margin-top: 8px;" onclick="showDetails(${assignment.id})">View Details</button>
@@ -571,10 +609,28 @@ function undoAction() {
     const assignment = getAssignmentById(lastAction.assignmentId);
     if (!assignment) return;
     
-    if (lastAction.type === 'markInProgress' || lastAction.type === 'markComplete') {
+    if (lastAction.type === 'markInProgress' || lastAction.type === 'markComplete' || lastAction.type === 'undoMarkComplete') {
         // Revert status
         assignment.status = lastAction.previousStatus;
         assignment.progress = lastAction.previousProgress || 0;
+        
+        // Update UI
+        updateAssignmentCard(lastAction.assignmentId);
+        
+        // Hide toast
+        const toast = document.getElementById('toast');
+        toast.classList.remove('show');
+        
+        // Clear last action
+        lastAction = null;
+        
+        // Show confirmation
+        setTimeout(() => {
+            showToast('Action undone');
+        }, 300);
+    } else if (lastAction.type === 'continueWork') {
+        // Revert progress
+        assignment.progress = lastAction.previousProgress;
         
         // Update UI
         updateAssignmentCard(lastAction.assignmentId);
