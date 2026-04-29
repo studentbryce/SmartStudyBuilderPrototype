@@ -264,5 +264,19 @@
     </div>
 
     <script src="../assets/js/support.js"></script>
+    <script>
+        // Ensure mobile nav anchors navigate (workaround for touch/overlay issues)
+        (function() {
+            const items = document.querySelectorAll('.mobile-nav-item');
+            items.forEach(a => {
+                const href = a.getAttribute('href');
+                if (!href || href === '#') return;
+                a.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.location.href = href;
+                });
+            });
+        })();
+    </script>
 </body>
 </html>

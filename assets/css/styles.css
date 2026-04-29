@@ -1664,6 +1664,7 @@ body {
     
     .mobile-nav {
         display: flex;
+        z-index: 3000; /* bring mobile nav above overlays */
     }
     
     /* View controls stack */
