@@ -1730,6 +1730,17 @@ body {
         padding-bottom: 80px; /* Space for mobile nav */
     }
     
+    /* Keep reminders above the mobile nav so they don't cover buttons */
+    .reminder-launcher {
+        bottom: 92px; /* raise launcher above mobile nav */
+        right: 16px;
+    }
+
+    .reminder-modal {
+        bottom: 112px; /* raise modal above mobile nav */
+        right: 16px;
+        width: min(420px, calc(100vw - 32px));
+    }
     /* Single column layout */
     .assignments-grid {
         grid-template-columns: 1fr;
