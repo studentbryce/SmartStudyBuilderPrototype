@@ -11,6 +11,75 @@
     </script>
     <link rel="stylesheet" href="../assets/css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        .courses-list {
+            margin-top: var(--spacing-md);
+        }
+
+        .course-cards {
+            list-style: none;
+            padding: 0;
+            margin: 0 -0.5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: var(--spacing-md);
+        }
+
+        .course-card {
+            background: var(--bg-white);
+            border: 1px solid var(--border-color);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-sm);
+            transition: all 0.25s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: var(--spacing-md);
+        }
+
+        .course-card:hover {
+            box-shadow: var(--shadow-md);
+            transform: translateY(-3px);
+        }
+
+        .course-info {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .course-meta {
+            color: var(--text-secondary);
+            font-size: 0.875rem;
+            margin-top: 4px;
+        }
+
+        .course-actions {
+            display: flex;
+            width: 100%;
+            gap: 8px;
+            justify-content: flex-start;
+            margin-top: var(--spacing-sm);
+        }
+
+        .course-actions .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            text-decoration: none;
+        }
+
+        @media (max-width: 767px) {
+            .course-actions {
+                flex-direction: column;
+            }
+
+            .course-actions .btn {
+                width: 100%;
+            }
+        }
+    </style>
 </head>
 <body>
     <header class="header">
