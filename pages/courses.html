@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses - Smart Study Schedule Builder</title>
+    <script>
+        if (sessionStorage.getItem('hubLoggedIn') !== 'true') {
+            window.location.replace('login.html');
+        }
+    </script>
+    <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <h1>Toi Ohomai Student Hub</h1>
+                </div>
+                <nav class="nav">
+                    <a href="hub.html" class="nav-link">Dashboard</a>
+                    <a href="schedule.html" class="nav-link">Planner</a>
+                    <a href="support.html" class="nav-link">Help</a>
+                </nav>
+                <div class="user-profile">
+                    <span>Maya P.</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <div class="page-header">
+                <h2>My Courses</h2>
+                <div class="sync-status">
+                    <span class="sync-indicator">●</span>
+                    <span class="sync-text">Courses last synced: just now</span>
+                </div>
+            </div>
+
+            <section class="courses-list">
+                <p class="section-subtitle">A list of your enrolled courses and quick actions.</p>
+
+                <ul class="course-cards">
+                    <li class="course-card">
+                        <div class="course-info">
+                            <span class="course-tag course-tag ai">AI and Algorithms</span>
+                            <div class="course-meta">COMP.7001 • Est. workload: medium</div>
+                        </div>
+                        <div class="course-actions">
+                            <a class="btn btn-primary" href="schedule.html">Open Planner</a>
+                            <button class="btn btn-secondary" type="button">Open Moodle</button>
+                        </div>
+                    </li>
+                    <li class="course-card">
+                        <div class="course-info">
+                            <span class="course-tag course-tag cybersecurity">Cyber Security</span>
+                            <div class="course-meta">COMP.7005 • Est. workload: medium</div>
+                        </div>
+                        <div class="course-actions">
+                            <a class="btn btn-primary" href="schedule.html">Open Planner</a>
+                            <button class="btn btn-secondary" type="button">Open in Moodle</button>
+                        </div>
+                    </li>
+                    <li class="course-card">
+                        <div class="course-info">
+                            <span class="course-tag course-tag hci">Human Computer Interaction</span>
+                            <div class="course-meta">COMP.7213 • Est. workload: high</div>
+                        </div>
+                        <div class="course-actions">
+                            <a class="btn btn-primary" href="schedule.html">Open Planner</a>
+                            <button class="btn btn-secondary" type="button">Open Moodle</button>
+                        </div>
+                    </li>
+                </ul>
+
+            </section>
+        </div>
+    </main>
+
+    <nav class="mobile-nav">
+        <a href="hub.html" class="mobile-nav-item">
+            <span class="nav-icon">🏠</span>
+            <span class="nav-label">Home</span>
+        </a>
+        <a href="schedule.html" class="mobile-nav-item">
+            <span class="nav-icon">📅</span>
+            <span class="nav-label">Planner</span>
+        </a>
+        <a href="courses.html" class="mobile-nav-item active" aria-current="page">
+            <span class="nav-icon">📚</span>
+            <span class="nav-label">Courses</span>
+        </a>
+        <a href="support.html" class="mobile-nav-item">
+            <span class="nav-icon">🛟</span>
+            <span class="nav-label">Help</span>
+        </a>
+    </nav>
+
+    <script>
+        // ensure mobile nav links navigate reliably
+        (function() {
+            const items = document.querySelectorAll('.mobile-nav-item');
+            items.forEach(a => {
+                const href = a.getAttribute('href');
+                if (!href || href === '#') return;
+                a.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    window.location.href = href;
+                });
+            });
+        })();
+    </script>
+</body>
+</html>
